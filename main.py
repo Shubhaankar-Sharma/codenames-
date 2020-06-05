@@ -140,7 +140,7 @@ class Joinagame(Screen):
         
         layout.add_widget(label)
         
-        gameid = TextInput(text='')
+        gameid = TextInput(text='',multiline = False)
                 
         Screen.gameid = gameid
         
