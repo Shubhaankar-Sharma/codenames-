@@ -1,0 +1,22 @@
+
+
+
+<Main_Window>:
+    name:"first"
+    on_enter: root.Run()
+
+<SecondWindow>:
+    name:"second"
+
+    on_enter: root.Run()
+<Joinagame>:
+    name: "joinagame"
+    on_enter: root.Run()
+    on_pre_leave: root.exit()
+<Hostagame>:
+    name: "hostagame"
+    on_enter: root.Run()
+    on_pre_leave: root.exit()
+<Host>:
+    name: "host"
+    on_enter: root.Run()
