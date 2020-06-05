@@ -12,6 +12,7 @@ import sys
 from network import Network
 from kivy.properties import ObjectProperty
 ## i am making a change
+just_checking = 1000
 DB = []
 clicked = []
 win_times = []
