@@ -48,7 +48,7 @@ class Main_Window(Screen):
             button2 = Button(text="join as spymaster", on_press=onclick2)
             layout.add_widget(button2)
             
-            button3 = Button(text = 'join a game as a player',on_press  = joinagameasplayer )
+            button3 = Button(text = 'join a game as a player', on_press  = joinagameasaplayer)
             layout.add_widget(button3)
             Screen.add_widget(layout)
 
@@ -649,8 +649,8 @@ def hostclick(self):
 def hostback(self):
     Window_Manager.switch_to(Hostagame(name='host'))
 
-def joinagameasplayer(self):
-    Window_Manager.switch_to(Joinagamesasplayer(name='joinagameasplayer'))
+def joinagameasaplayer(self):
+    Window_Manager.switch_to(Joinagamesasplayer(name='joinagameasaplayer'))
 Window_Manager.add_widget(Main_Window(name="first"))
 
 

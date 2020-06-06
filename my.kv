@@ -20,3 +20,8 @@
 <Host>:
     name: "host"
     on_enter: root.Run()
+
+<Joinagamesasplayer>:
+    name: 'joinagameasaplayer'
+    on_enter: root.Run()
+    on_pre_leave: root.exit()
