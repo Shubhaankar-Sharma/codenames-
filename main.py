@@ -40,13 +40,16 @@ def score_label(
 
 class Main_Window(Screen):
         def Run(Screen):
-            layout = GridLayout(rows=3)
+            layout = GridLayout(rows=4)
             label = Label(text="codenames")
             layout.add_widget(label)
             button1 = Button(text="host a game ", on_press=hostback)
             layout.add_widget(button1)
             button2 = Button(text="join as spymaster", on_press=onclick2)
             layout.add_widget(button2)
+            
+            button3 = Button(text = 'join a game as a player',on_press  = joinagameasplayer )
+            layout.add_widget(button3)
             Screen.add_widget(layout)
 
 ## this shows the color of the words in the spymaster window
@@ -580,6 +583,44 @@ class Host(Screen):
 
         Screen.add_widget(layout)
 
+class Joinagamesasplayer(Screen):
+    def Run(Screen):
+        DB.clear()
+        
+        layout = GridLayout(rows=4)
+        
+        label = Label(text="enter the game id")
+        
+        layout.add_widget(label)
+        
+        gameid = TextInput(text='',multiline = False)
+                
+        Screen.gameid = gameid
+        
+        # when button press DB.append(gameid.text)
+        
+        layout.add_widget(gameid)
+        
+        button = Button(text="join", on_press=joinclick)
+        
+        layout.add_widget(button)
+        
+        back_button = Button(text="back", on_press=back_joinagame)
+        
+        layout.add_widget(back_button)
+        
+        Screen.add_widget(layout)
+
+
+    def exit(self):
+        # when exiting we will store the information entered by the user in a list
+        DB.append(self.gameid.text.strip())
+
+
+
+
+
+
 
 kv = Builder.load_file("my.kv")
 
@@ -608,7 +649,8 @@ def hostclick(self):
 def hostback(self):
     Window_Manager.switch_to(Hostagame(name='host'))
 
-
+def joinagameasplayer(self):
+    Window_Manager.switch_to(Joinagamesasplayer(name='joinagameasplayer'))
 Window_Manager.add_widget(Main_Window(name="first"))
 
 
@@ -621,6 +663,8 @@ Window_Manager.add_widget(Joinagame(name="joinagame"))
 Window_Manager.add_widget(Hostagame(name="hostagame"))
 
 Window_Manager.add_widget(Host(name='host'))
+
+Window_Manager.add_widget(Joinagamesasplayer(name = 'joinagameasplayer'))
 
 
 class mainApp(App):
