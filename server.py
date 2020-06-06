@@ -221,10 +221,11 @@ def init_mainlist(no_wrds, no_teams):
         v, a, b, g, y, br =  5, 5, 5, 5, 5, 5
 
     SCORES_DICT = {'VIOLET': v, 'AQUA': a, 'BLUE': b, 'GREEN': g, 'YELLOW': y, 'BROWN': br}
+    orignal_scores_dict = {'VIOLET': v, 'AQUA': a, 'BLUE': b, 'GREEN': g, 'YELLOW': y, 'BROWN': br}
     print(pos, pos_unedit)
     main_list = [team_violet, team_aqua, team_blue, team_green, team_yellow, filler_dict, bomb_dict, team_brown, no_teams,
                  no_wrds, pos_unedit, SCORES_DICT,
-                 list(get_all_values(SCORES_DICT)), main_dict]
+                 list(get_all_values(SCORES_DICT)), main_dict,orignal_scores_dict]
     print(main_list)
     return main_list
 
@@ -248,11 +249,11 @@ except socket.error as e:
 s.listen()
 print("Waiting For a connection, Server Started")
 
-## team_ornge was 5
 games = {}
 keys = []
-
-
+spymasterkeys = []
+spymaster_gamelink = {}
+games_clicked = {}
 def threaded_client(conn, player):
     player_id = pickle.loads(conn.recv(2048))
     print(player_id)
@@ -265,12 +266,25 @@ def threaded_client(conn, player):
 
         main_list = init_mainlist(no_wrds, no_teams)
         print(main_list)
-        x = player_id[-1]
+        x = player_id[-2]
         games[x] = main_list
         conn.send(pickle.dumps(main_list))
-        SCORES_DICT = main_list[-3]
+        SCORES_DICT = main_list[-4]
+        link = player_id[-1]+'_'+ player_id[-2]
+        spymaster_gamelink[link] = x
+        spymasterkeys.append(player_id[-1])
+
         keys.append(x)
         print("The KEY IS:",x)
+        games_clicked[x] = []
+    elif player_id[0] == 'spymaster':
+        link = player_id[-1] + '_' + player_id[-2]
+        x = spymaster_gamelink[link]
+        lsdt = games[x]
+        conn.send(pickle.dumps(lsdt))
+
+
+
     else:
         print(games)
         print(keys)
@@ -282,19 +296,23 @@ def threaded_client(conn, player):
     reply = ''
     while True:
         try:
-            if player > 4:
+
                 data = pickle.loads(conn.recv(2048))
-                if data == 'VIOLET':
-                    SCORES_DICT[data] -= 1
-                    print(SCORES_DICT)
-                if data == 'AQUA':
-                    SCORES_DICT[data] -= 1
-                if data == 'BLUE':
-                    SCORES_DICT[data] -= 1
-                if data == 'GREEN':
-                    SCORES_DICT[data] -= 1
-                if data == 'YELLOW':
-                    SCORES_DICT[data] -= 1
+                print(data)
+
+                if player_id[0] == 'host':
+                    games_clicked[x].append(data[-1][-1])
+                if data[0] == 'VIOLET':
+                    SCORES_DICT[data[0]] -= 1
+
+                if data[0] == 'AQUA':
+                    SCORES_DICT[data[0]] -= 1
+                if data[0] == 'BLUE':
+                    SCORES_DICT[data[0]] -= 1
+                if data[0] == 'GREEN':
+                    SCORES_DICT[data[0]] -= 1
+                if data[0] == 'YELLOW':
+                    SCORES_DICT[data[0]] -= 1
 
 
                 if not data:
@@ -302,12 +320,18 @@ def threaded_client(conn, player):
                     break
 
                 else:
-                    if data == 'score' :
-                        reply = list(get_all_values(SCORES_DICT))
-                    if data == 'bomb':
+
+                    if data[0] == 'bomb':
                         reply = SCORES_DICT
+                        print(reply)
+                    elif data[0] == 'clicked':
+                        reply = games_clicked[id_pp]
+                        print(reply)
+                    elif data[0] == 'GREY':
+                        reply = 'popooo'
                     else:
-                        reply = SCORES_DICT[data]
+                        reply = SCORES_DICT[data[0]]
+                        print(reply)
 
                 print("Recieved: ", data)
                 print("Sending:", reply)
