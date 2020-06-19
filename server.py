@@ -245,7 +245,7 @@ try:
 
 except socket.error as e:
     str(e)
-
+print(server_ip)
 s.listen()
 print("Waiting For a connection, Server Started")
 
