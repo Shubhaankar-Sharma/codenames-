@@ -187,44 +187,52 @@ class Joinagame(Screen):
 class SecondWindow(Screen):
 
     def Run(Screen):
+        try:
         
-        n = init_net()
-        
-        lst = network(n, DB[-1])
+            n = init_net()
 
-        ###change this in server
-        
-        if lst[1] > 1 and lst[1] < 5:
-        
-            layout = GridLayout(cols=5)
-        
-        else:
-        
-            layout = GridLayout(cols=6)
+            lst = network(n, DB[-1])
+
+            ###change this in server
+
+            if lst[1] > 1 and lst[1] < 5:
+
+                layout = GridLayout(cols=5)
+
+            else:
+
+                layout = GridLayout(cols=6)
 
 
-        for i in lst[0]:
-        
+            for i in lst[0]:
 
-            button = Button(text=i, size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
-                            background_color=(255, 0, 255))
-        
 
-            instance(button, lst)
+                button = Button(text=i, size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
+                                background_color=(255, 0, 255))
 
-        
-            layout.add_widget(button)
-        
-        button2 = Button(text="Back", size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
-                         on_press=onclick)
-        
-        layout.add_widget(button2)
 
-        # db = Label(text = str(DB[0]))
+                instance(button, lst)
 
-        # layout.add_widget(db)
-        
-        Screen.add_widget(layout)
+
+                layout.add_widget(button)
+
+            button2 = Button(text="Back", size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
+                             on_press=onclick)
+
+            layout.add_widget(button2)
+
+            # db = Label(text = str(DB[0]))
+
+            # layout.add_widget(db)
+
+            Screen.add_widget(layout)
+        except:
+            layout = GridLayout(cols = 2)
+            label1 = Label(text="Pls tell the game developer to start the server.")
+            layout.add_widget(label1)
+            button2 = Button(text="Back", on_press=onclick)
+            layout.add_widget(button2)
+            Screen.add_widget(layout)
 
 
 class Hostagame(Screen):
@@ -525,107 +533,114 @@ class Host(Screen):
                             new_popup.open()
 
     def Run(Screen):
+        try:
 
-        n = init_net()
+            n = init_net()
 
-        Screen.n = n
+            Screen.n = n
 
-        lst = network(n, DB[-1])
+            lst = network(n, DB[-1])
 
-        Screen.lst = lst
-
-
-        # store score create a function to get score as a string then define label
-        """
-        ref :lst = [words_ordered, no_teams,SCORE_DICT, team_violet, team_aqua, team_blue, team_green, team_yellow, team_brown, filler,
-           bomb]
-        """
-        """
-        ref:
-                    DB = []
-                    clicked = []
-                    win_times = []
-                    SCORE = []
-                    TEAMS = []
-                    NO_TEAMS = 0               
-        """
-        NO_TEAMS = lst[1]
-
-        SCORE = lst[3]
+            Screen.lst = lst
 
 
-        SCORE_DICT = lst[2]
-        
-        #this gives a relevant dictionary of teams
+            # store score create a function to get score as a string then define label
+            """
+            ref :lst = [words_ordered, no_teams,SCORE_DICT, team_violet, team_aqua, team_blue, team_green, team_yellow, team_brown, filler,
+               bomb]
+            """
+            """
+            ref:
+                        DB = []
+                        clicked = []
+                        win_times = []
+                        SCORE = []
+                        TEAMS = []
+                        NO_TEAMS = 0               
+            """
+            NO_TEAMS = lst[1]
 
-        for k, v in SCORE_DICT.items():
-
-            if NO_TEAMS == 0:
-
-                break
-
-            TEAMS_dict[k] = v
-            
-
-            NO_TEAMS -=1
-
-
-        for i in TEAMS_dict.keys():
-
-            teamnames.append(i)
-
-        # this gives a list of names of teams
+            SCORE = lst[3]
 
 
+            SCORE_DICT = lst[2]
 
-        if lst[1] > 1 and lst[1] < 5:
+            #this gives a relevant dictionary of teams
+
+            for k, v in SCORE_DICT.items():
+
+                if NO_TEAMS == 0:
+
+                    break
+
+                TEAMS_dict[k] = v
 
 
-            layout = GridLayout(cols=5)
-
-        else:
-
-            layout = GridLayout(cols=6)
+                NO_TEAMS -=1
 
 
-        for i in lst[0]:
+            for i in TEAMS_dict.keys():
+
+                teamnames.append(i)
+
+            # this gives a list of names of teams
 
 
-            button = Button(
 
-                text=i, size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
+            if lst[1] > 1 and lst[1] < 5:
 
-                            background_color=(255, 0, 255), on_press=Screen.instancehost
+
+                layout = GridLayout(cols=5)
+
+            else:
+
+                layout = GridLayout(cols=6)
+
+
+            for i in lst[0]:
+
+
+                button = Button(
+
+                    text=i, size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
+
+                                background_color=(255, 0, 255), on_press=Screen.instancehost
+                )
+
+
+                layout.add_widget(button)
+
+            button2 = Button(
+                text="Back", size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
+                             on_press=hostback
             )
 
+            layout.add_widget(button2)
 
-            layout.add_widget(button)
+            score = Button(
 
-        button2 = Button(
-            text="Back", size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
-                         on_press=hostback
-        )
+                text = score_label(TEAMS_dict,teamnames),size_hint=(0.5, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5}
 
-        layout.add_widget(button2)
-        
-        score = Button(
+            )
 
-            text = score_label(TEAMS_dict,teamnames),size_hint=(0.5, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5}
-
-        )
-
-        Screen.score = score
+            Screen.score = score
 
 
 
-        layout.add_widget(score)
+            layout.add_widget(score)
 
-        # db = Label(text = str(DB[0]))
+            # db = Label(text = str(DB[0]))
 
-        # layout.add_widget(db)
+            # layout.add_widget(db)
 
-        Screen.add_widget(layout)
-
+            Screen.add_widget(layout)
+        except:
+            layout = GridLayout(cols = 2)
+            label1 = Label(text="Pls tell the game developer to start the server.")
+            layout.add_widget(label1)
+            button2 = Button(text="Back", on_press=onclick)
+            layout.add_widget(button2)
+            Screen.add_widget(layout)
 class Joinagamesasplayer(Screen):
     def Run(Screen):
 
@@ -795,117 +810,108 @@ class Player(Screen):
                                         new_popup.open()
 
     def Run(Screen):
-        n = init_net()
+        try:
+            n = init_net()
 
-        Screen.n = n
+            Screen.n = n
 
-        lst = network(n, DB[-1])
+            lst = network(n, DB[-1])
 
-        Screen.lst = lst
+            Screen.lst = lst
 
-        # store score create a function to get score as a string then define label
-        """
-        ref :lst = [words_ordered, no_teams,SCORE_DICT, team_violet, team_aqua, team_blue, team_green, team_yellow, team_brown, filler,
-           bomb]
-        """
-        """
-        ref:
-                    DB = []
-                    clicked = []
-                    win_times = []
-                    SCORE = []
-                    TEAMS = []
-                    NO_TEAMS = 0               
-        """
-        NO_TEAMS = lst[1]
+            # store score create a function to get score as a string then define label
+            """
+            ref :lst = [words_ordered, no_teams,SCORE_DICT, team_violet, team_aqua, team_blue, team_green, team_yellow, team_brown, filler,
+               bomb]
+            """
+            """
+            ref:
+                        DB = []
+                        clicked = []
+                        win_times = []
+                        SCORE = []
+                        TEAMS = []
+                        NO_TEAMS = 0               
+            """
+            NO_TEAMS = lst[1]
 
-        SCORE = lst[3]
+            SCORE = lst[3]
 
-        SCORE_DICT = lst[4]
+            SCORE_DICT = lst[4]
 
-        # this gives a relevant dictionary of teams
+            # this gives a relevant dictionary of teams
 
-        for k, v in SCORE_DICT.items():
+            for k, v in SCORE_DICT.items():
 
-            if NO_TEAMS == 0:
-                break
+                if NO_TEAMS == 0:
+                    break
 
-            TEAMS_dict[k] = v
+                TEAMS_dict[k] = v
 
-            NO_TEAMS -= 1
+                NO_TEAMS -= 1
 
-        for i in TEAMS_dict.keys():
-            teamnames.append(i)
+            for i in TEAMS_dict.keys():
+                teamnames.append(i)
 
-        # this gives a list of names of teams
+            # this gives a list of names of teams
 
-        if lst[1] > 1 and lst[1] < 5:
+            if lst[1] > 1 and lst[1] < 5:
 
-            layout = GridLayout(cols=5)
+                layout = GridLayout(cols=5)
 
-        else:
+            else:
 
-            layout = GridLayout(cols=6)
+                layout = GridLayout(cols=6)
 
-        for i in lst[0]:
-            button = Button(
+            for i in lst[0]:
+                button = Button(
 
-                text=i, size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
+                    text=i, size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
 
-                background_color=(255, 0, 255) #onpress
+                    background_color=(255, 0, 255) #onpress
+                )
+                button_dict[i] = button
+                Screen.button = button
+                event = Clock.schedule_interval(Screen.check_update , 5)
+                event()
+                event_list.append(event)
+
+                layout.add_widget(button)
+
+
+            button2 = Button(
+                text="Back", size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
+                on_press= joinagameasaplayer_back
             )
-            button_dict[i] = button
-            Screen.button = button
-            event = Clock.schedule_interval(Screen.check_update , 5)
-            event()
-            event_list.append(event)
 
-            layout.add_widget(button)
+            layout.add_widget(button2)
 
+            score = Button(
 
-        button2 = Button(
-            text="Back", size_hint=(0.2, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5},
-            on_press= joinagameasaplayer_back
-        )
+                text=score_label(TEAMS_dict, teamnames), size_hint=(0.5, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5}
 
-        layout.add_widget(button2)
+            )
 
-        score = Button(
+            Screen.score = score
 
-            text=score_label(TEAMS_dict, teamnames), size_hint=(0.5, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.5}
+            layout.add_widget(score)
 
-        )
+            # db = Label(text = str(DB[0]))
 
-        Screen.score = score
+            # layout.add_widget(db)
 
-        layout.add_widget(score)
-
-        # db = Label(text = str(DB[0]))
-
-        # layout.add_widget(db)
-
-        Screen.add_widget(layout)
-
+            Screen.add_widget(layout)
+        except:
+            layout = GridLayout(cols = 2)
+            label1 = Label(text="Pls tell the game developer to start the server.")
+            layout.add_widget(label1)
+            button2 = Button(text="Back", on_press=onclick)
+            layout.add_widget(button2)
+            Screen.add_widget(layout)
     def exit(self):
         for i in event_list:
             Clock.unschedule(i)
         event_list.clear()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 kv = Builder.load_file("my.kv")
 
